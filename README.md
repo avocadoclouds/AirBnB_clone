@@ -2,8 +2,6 @@
 
 ### Making a clone of the [airbnb.com](airbnb.com) application.
 
-### Results
-![alt text](file:///Users/rihannaali/Documents/Screen%20Shot%202022-02-07%20at%2011.04.52%20PM.png)
 ---
 
 The aim of ths project is to create a clone of the Airbnb web application. Front-end clone as well as backend model clone.

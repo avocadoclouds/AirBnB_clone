@@ -7,6 +7,9 @@
 The aim of ths project is to create a clone of the Airbnb web application. Front-end clone as well as backend model clone.
 
 ---
+### Results
+![](web_static/images/result.png)
+
 #### Goals
 
 - A command interpreter to manipulate data without a visual interface, like in a Shell (perfect for development and debugging)

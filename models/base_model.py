@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """Module with a class"""
-import imp
 import uuid
 from datetime import datetime
 
@@ -54,11 +53,6 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
 
-            # calls new() method from FileStorage for new instances
-            from models import storage
-
-            storage.new(self)
-
     def __str__(self):
         """Returns the information about an instance/object like:
             Class name,
@@ -83,11 +77,6 @@ class BaseModel:
         """
 
         self.updated_at = datetime.now()
-
-        # calls save of FileStorage class
-        from models import storage
-
-        storage.save()
 
     def to_dict(self):
         """

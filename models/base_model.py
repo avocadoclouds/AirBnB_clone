@@ -11,10 +11,33 @@ class BaseModel:
     for other classes.
     """
 
-    # Public Attributes
-    id = str(uuid4())  # creates unique id for each basemodel
-    created_at = datetime.now()  # time of when instance created
-    updated_at = datetime.now()
+    def __init__(self, *args, **kwargs):
+        """constructor for instance"""
+        # we need to save the kwargs value in __dict__ b/c
+        # it hold will be the storing all of the attributes
+        # but before saving we need to change the values of
+        # created_at and updated_at to datetime b/c they are strings
+        if len(kwargs) > 0:
+            for key, value in kwargs.items():
+                if key == 'created_at':
+                    if type(kwargs["created_at"]) == str:
+                        value = datetime.strptime(
+                            value, '%Y-%m-%dT%H:%M:%S.%f')
+                if key == 'updated_at':
+                    if type(kwargs["updated_at"]) == str:
+                        value = datetime.strptime(
+                            value, '%Y-%m-%dT%H:%M:%S.%f')
+
+                # each key of kwargs is an attribute name
+                # ach value of kwargs is the value of this attribute name
+                elif key != "__class__":
+                    self.__dict__[key] = value
+
+        else:
+            # Public Attributes
+            self.id = str(uuid4())  # creates unique id for each basemodel
+            self.created_at = datetime.now()  # time of when instance created
+            self.updated_at = datetime.now()
 
     def __str__(self):
         """

@@ -37,11 +37,11 @@ class BaseModel:
 
     def to_dict(self):
         """
-        returns a dictionary containing all
-        keys/values of __dict__ of the instance
+            returns a dictionary containing all
+            keys/values of __dict__ of the instance
 
-        This method be the first piece of the
-        serialization/deserialization process:
+            This method be the first piece of the
+            serialization/deserialization process:
         """
 
         # Note: using self.__dict__,

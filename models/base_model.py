@@ -52,6 +52,7 @@ class BaseModel:
 
         # we also need what is in __dict__ to be inside dic
         dic = self.__dict__
+        dic["id"] = self.id
         dic["__class__"] = self.__class__.__name__
         dic["created_at"] = str(self.created_at.isoformat())
         dic["updated_at"] = str(self.updated_at.isoformat())

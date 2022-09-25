@@ -1,100 +1,87 @@
-#!/usr/bin/python3
-""" Module for class FileStorage"""
-
+"""
+a module with class
+"""
+from genericpath import exists
 import json
-from os.path import exists
 from models.base_model import BaseModel
 
 
-class FileStorage:
-    """ class that serialized instances to a json file and,
-    deserializes a json file to instances. """
+class FileStorage():
+    """
+    a class FileStorage that serializes instances to a JSON file
+    and deserializes JSON file to instances
+    """
 
-    # Private class attributes:
-
-    # path to json file
+    # private attributes
     __file_path = "file.json"
+    __objects = {}  # {BaseModel.12: value, BaseModel.10: value}
 
-    # dictionary - empty but will store all objects by <class name>.id
-    __objects = {}
-
-    # Public instance methods:
+    # public methods
 
     def all(self):
-        """ Returns the dictionary __objects"""
+        """
+        returns the dictionary __objects
+        """
         return self.__objects
 
     def new(self, obj):
         """
-        Sets the objects(obj) with key <obj class name>.id 
-        in the __objects dictionary. 
+        sets the obj in __objects
+        with the key <obj class name>.id
         """
-        # This wont work:
-        # FileStorage.__objects[obj] = __class__.name__.id
 
-        # we are trying to set our key inside
-        # the __object dictionary in the  format ->
-        # <object class name>. <obj.id>
-        # So first we need to format the key then assign it a value obj
-        # The 1st part <object class name> is the type of obj + the name
-        # 2nd part is the just id
+        # we are formating the key to be the objs'class name
+        # and the id
+        # to achieve that we need to find the type of obj,
+        # type(obj) will return to the class which the obj belongs to
+        # then we need the name of the class
+        # then we need the id of the obj
+        # finally we need to add the edited key to __objects ->
+        # with the value of obj
 
-        key = "{}.{}".format(type(obj).__name__, obj.id)
+        key = '{}.{}'.format(type(obj).__class__.__name__, obj.id)
         self.__objects[key] = obj
 
     def save(self):
         """
-        Serializes __onbjects dictionary to json file,
-        path: __file_path
+        serializes __objects to the JSON file (__file_path)
         """
 
-        # In __objects there will be more
-        # FileStorage.__file_path = json.dump(FileStorage.__objects)
+        # This won't work:
+        """
+        jsonn = json.dumps(self.__objects)
+        with open(self.__file_path, "w") as f:
+            f.write(jsonn)
+        """
 
-        # Note: This won't work because we working with a file, not a variable
-        # To make it work I need to use the file methods
+        # Note: the 'value' of the key in dictionery
+        #      here is an instance of class and
+        #      we can't serialise an instance so, we need to generate
+        #      a dictionary of that instance using the method .to_dict
+        #      then we assign the dictionary back to the key, then
+        #      we serialise the file.
 
-        #----------------------------#
-        # Steps to a dump a dictionery to json file
-        # 1st: open file in w mode
-        # 2nd: dump file or do this before opening
-        # 3rd: write to a file
-        # 4th: close file if didn't open 'with'
-
-        with open(self.__file_path, "w") as json_file:
-
-            # Note: the value variable here is an instance of class and
-            #      we can't serialise an instance so, we need to generate
-            #      a dictionary of that instance using the method .to_dict
-            #      then we assign the dictionary back to the key, then
-            #      we serialise the file.
-            dict_storage = {}
-            for key, value in self.__objects.items():
-                dict_storage[key] = value.to_dict()
-            json.dump(dict_storage, json_file)
+        dic_storage = {}
+        for key, value in self.__objects.items():
+            dic_storage[key] = value.to_dict()
+        jsonn = json.dumps(dic_storage)
+        with open(self.__file_path, "w") as file_json:
+            file_json.write(jsonn)
 
     def reload(self):
         """
-        deserializes the JSON file to __objects, if json file exits
-        if no file, does nothing
+        if __file_path (json file) exits:
+            deserialises the json file to __objects
+        else:
+            does nothing, no exceptions
         """
 
-        # if exists(FileStorage.__file_path) == True:
-        #     FileStorage.__objects = json.load(FileStorage.__file_path)
-        # Note: This won't work because we working with a file, not a variable-
-        # To make it work I need to use the file methods
-
-        #--------------------------#
-        # Steps to load json file to a dictionary
-        # 1st: Open the file r mode
-        # 2nd: load json in a dictionary
-        # 3rd: close file
-
+        # check if __file_path exists
         try:
             if exists(self.__file_path):
-                with open(self.__file_path, "r") as json_file:
-                    # Note: now the value which a dictionary,
-                    #  now is deserialised
+                # Note: now the value which a dictionary,
+                #  now is deserialised
+                with open(self.__file_path) as json_file:
                     obj_dict = json.load(json_file)
                     for key, value in obj_dict.items():
                         # explanation for this!!!

@@ -1,8 +1,10 @@
+#!/usr/bin/python3
 """
 a module with class
 """
 from genericpath import exists
 import json
+from multiprocessing.sharedctypes import Value
 from models.base_model import BaseModel
 
 
@@ -39,7 +41,7 @@ class FileStorage():
         # finally we need to add the edited key to __objects ->
         # with the value of obj
 
-        key = '{}.{}'.format(type(obj).__class__.__name__, obj.id)
+        key = '{}.{}'.format(type(obj).__name__, obj.id)
         self.__objects[key] = obj
 
     def save(self):
@@ -62,11 +64,10 @@ class FileStorage():
         #      we serialise the file.
 
         dic_storage = {}
-        for key, value in self.__objects.items():
-            dic_storage[key] = value.to_dict()
-        jsonn = json.dumps(dic_storage)
+        for key in self.__objects:
+            dic_storage[key] = self.__objects[key].to_dict()
         with open(self.__file_path, "w") as file_json:
-            file_json.write(jsonn)
+            json.dump(dic_storage, file_json)
 
     def reload(self):
         """
@@ -81,12 +82,29 @@ class FileStorage():
             if exists(self.__file_path):
                 # Note: now the value which a dictionary,
                 #  now is deserialised
-                with open(self.__file_path) as json_file:
-                    obj_dict = json.load(json_file)
-                    for key, value in obj_dict.items():
-                        # explanation for this!!!
-                        obj_dict = eval(value['__class__'])(**value)
-                        self.__objects[key] = obj_dict
+
+                with open(self.__file_path, 'r') as f:
+                    jo = json.load(f)
+                for key, value in jo.items():
+                    """
+                    '**' takes a dict and extracts its contents
+                    and passes them as parameters to a function.
+                    Take this function for example:
+
+                    def func(a=1, b=2, c=3):
+                        print a
+                        print b
+                        print b
+                    Now normally you could call this function like this:
+                        func(1, 2, 3)
+                    But you can also populate a dictionary with
+                    those parameters stored like so:
+                        params = {'a': 2, 'b': 3, 'c': 4}
+                    Now you can pass this to the function:
+                        func(**params) ** means kwargs
+                    """
+
+                    jo[key] = BaseModel(**value)
 
         except FileNotFoundError:
             return

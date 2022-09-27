@@ -4,7 +4,6 @@ a module with class
 """
 import json
 from os import path
-from re import S
 
 from models.base_model import BaseModel
 

@@ -3,8 +3,10 @@
 a module with class
 """
 import json
-from models.base_model import BaseModel
 from os import path
+from re import S
+
+from models.base_model import BaseModel
 
 
 class FileStorage():
@@ -66,8 +68,8 @@ class FileStorage():
         dic_storage = {}
         for key, value in self.__objects.items():
             dic_storage[key] = value.to_dict()
-        with open(self.__file_path, "w") as file_json:
-            json.dump(dic_storage, file_json)
+        with open(self.__file_path, "w", encoding='utf-8') as file_json:
+            file_json.write(json.dumps(dic_storage))
 
     def reload(self):
         """
@@ -78,33 +80,30 @@ class FileStorage():
         """
 
         # check if __file_path exists
-        try:
-            if path.exists(self.__file_path):
-                # Note: now the value which a dictionary,
-                #  now is deserialised
+        if path.exists(self.__file_path):
+            # Note: now the value which a dictionary,
+            #  now is deserialised
 
-                with open(self.__file_path, 'r', encoding="UTF8") as f:
+            with open(self.__file_path, 'r', encoding="utf-8") as f:
 
-                    """
-                    '**' takes a dict and extracts its contents
-                    and passes them as parameters to a function.
-                    Take this function for example:
+                """
+                '**' takes a dict and extracts its contents
+                and passes them as parameters to a function.
+                Take this function for example:
 
-                    def func(a=1, b=2, c=3):
-                        print a
-                        print b
-                        print b
-                    Now normally you could call this function like this:
-                        func(1, 2, 3)
-                    But you can also populate a dictionary with
-                    those parameters stored like so:
-                        params = {'a': 2, 'b': 3, 'c': 4}
-                    Now you can pass this to the function:
-                        func(**params) ** means kwargs
-                    """
+                def func(a=1, b=2, c=3):
+                    print a
+                    print b
+                    print b
+                Now normally you could call this function like this:
+                    func(1, 2, 3)
+                But you can also populate a dictionary with
+                those parameters stored like so:
+                    params = {'a': 2, 'b': 3, 'c': 4}
+                Now you can pass this to the function:
+                    func(**params) ** means kwargs
+                """
 
-                    json_dict = json.load(f)
-                    for k, v in json_dict.items():
-                        self.__objects[k] = eval(v['__class__'])(**v)
-        except FileNotFoundError:
-            return
+                json_dict = json.loads(f.read())
+                for k, v in json_dict.items():
+                    self.__objects[k] = eval(v['__class__'])(**v)

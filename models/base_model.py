@@ -1,7 +1,7 @@
 """Module with class"""
 
+import uuid
 from datetime import datetime
-from uuid import uuid4
 
 import models
 
@@ -21,17 +21,19 @@ class BaseModel:
         # created_at and updated_at to datetime b/c they are strings
         if len(kwargs) > 0:
             for key, value in kwargs.items():
-                if key != "__class__":
-                    setattr(self, key, value)
                 if key in ('created_at', 'updated_at'):
                     value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
+
+                if key != "__class__":
+                    # setattr(self, key, value)
+                    self.__dict__[key] = value
 
                 # each key of kwargs is an attribute name
                 # ach value of kwargs is the value of this attribute name
 
         else:
             # Public Attributes
-            self.id = str(uuid4())  # creates unique id for each basemodel
+            self.id = str(uuid.uuid4())  # creates unique id for each basemodel
             self.created_at = datetime.now()  # time of when instance created
             self.updated_at = datetime.now()
 

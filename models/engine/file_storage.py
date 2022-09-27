@@ -2,10 +2,9 @@
 """
 a module with class
 """
-from genericpath import exists
 import json
-from multiprocessing.sharedctypes import Value
 from models.base_model import BaseModel
+from os import path
 
 
 class FileStorage():
@@ -41,7 +40,8 @@ class FileStorage():
         # finally we need to add the edited key to __objects ->
         # with the value of obj
 
-        key = '{}.{}'.format(type(obj).__name__, obj.id)
+        # key = '{}.{}'.format(type(obj).__name__, obj.id)
+        key = obj.__class__.__name__ + '.' + obj.id
         self.__objects[key] = obj
 
     def save(self):
@@ -64,8 +64,8 @@ class FileStorage():
         #      we serialise the file.
 
         dic_storage = {}
-        for key in self.__objects:
-            dic_storage[key] = self.__objects[key].to_dict()
+        for key, value in self.__objects.items():
+            dic_storage[key] = value.to_dict()
         with open(self.__file_path, "w") as file_json:
             json.dump(dic_storage, file_json)
 
@@ -79,13 +79,12 @@ class FileStorage():
 
         # check if __file_path exists
         try:
-            if exists(self.__file_path):
+            if path.exists(self.__file_path):
                 # Note: now the value which a dictionary,
                 #  now is deserialised
 
-                with open(self.__file_path, 'r') as f:
-                    jo = json.load(f)
-                for key, value in jo.items():
+                with open(self.__file_path, 'r', encoding="UTF8") as f:
+
                     """
                     '**' takes a dict and extracts its contents
                     and passes them as parameters to a function.
@@ -104,7 +103,8 @@ class FileStorage():
                         func(**params) ** means kwargs
                     """
 
-                    jo[key] = BaseModel(**value)
-
+                    json_dict = json.load(f)
+                    for k, v in json_dict.items():
+                        self.__objects[k] = eval(v['__class__'])(**v)
         except FileNotFoundError:
             return

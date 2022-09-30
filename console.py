@@ -63,20 +63,20 @@ class HBNBCommand(cmd.Cmd):
         if not arg:
             print("** class name missing **")
 
-        elif arg_list[0] != "BaseModel":
+        elif arg != "BaseModel":
             print("** class doesn't exist **")
 
         # check the length of the arg, we are expecting to be 2
-        elif len(arg_list) < 2:
+        if len(arg_list) < 2:
             print("** instance id missing **")
-
-        obj_id = arg_list[0] + '.' + arg_list[1]
-        data = models.storage.all().get(obj_id)
-        if data is None:
-            print("** no instance found **")
-
         else:
-            return print(data)
+            obj_id = arg_list[0] + '.' + arg_list[1]
+            data = models.storage.all().get(obj_id)
+            if data is None:
+                print("** no instance found **")
+
+            else:
+                return print(data)
 
     def do_destroy(self, arg):
         """
@@ -91,22 +91,22 @@ class HBNBCommand(cmd.Cmd):
         if not arg:
             print("** class name missing **")
 
-        elif arg_list[0] != "BaseModel":
+        elif arg != "BaseModel":
             print("** class doesn't exist **")
 
         # check the length of the arg, we are expecting to be 2
         elif len(arg_list) < 2:
             print("** instance id missing **")
-
-        obj_id = arg_list[0] + '.' + arg_list[1]
-        models.storage.all().pop(obj_id)
-        data = models.storage.all().get(obj_id)
-        if data is None:
-            models.storage.save()
-            return print("deleted")
-
         else:
-            print("** no instance found **")
+            obj_id = arg_list[0] + '.' + arg_list[1]
+            models.storage.all().pop(obj_id)
+            data = models.storage.all().get(obj_id)
+            if data is None:
+                models.storage.save()
+                return print("deleted")
+
+            else:
+                print("** no instance found **")
 
     def do_all(self, arg):
         """
@@ -157,7 +157,7 @@ class HBNBCommand(cmd.Cmd):
         if not arg:
             print("** class name missing **")
 
-        elif arg_list[0] != "BaseModel":
+        elif arg != "BaseModel":
             print("** class doesn't exist **")
 
         # check the length of the arg, we are expecting to be 2

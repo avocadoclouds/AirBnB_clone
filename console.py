@@ -136,7 +136,7 @@ class HBNBCommand(cmd.Cmd):
         #         # obj_list.append(str(data[key]))
         #         print([str(data[key])])
 
-        if arg == arg_list[0]:
+        if arg_list[0] == "BaseModel" or not arg:
             data = models.storage.all()
             for key, value in data.items():
                 key = key.split('.')[0]  # this doesnt id part
@@ -147,7 +147,7 @@ class HBNBCommand(cmd.Cmd):
                     obj_list.append(str(value))
                     print(obj_list)
         else:
-            print("** class name missing **")
+            print("** class doesn't exist **")
 
             # if obj["__class__"] == "BaseModel":
             #     obj_list.append(obj)

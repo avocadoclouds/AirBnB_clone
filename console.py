@@ -81,99 +81,99 @@ class HBNBCommand(cmd.Cmd):
             else:
                 return print(data)
 
-    # def do_destroy(self, arg):
-    #     """
-    #     Deletes an instance based on the class name and id
-    #     (save the change into the JSON file).
-    #     """
-    #     if type(arg) == str:
-    #         arg_list = arg.split(" ")
-    #     else:
-    #         arg
+    def do_destroy(self, arg):
+        """
+        Deletes an instance based on the class name and id
+        (save the change into the JSON file).
+        """
+        if type(arg) == str:
+            arg_list = arg.split(" ")
+        else:
+            arg
 
-    #     if arg is None:
-    #         print("** class name missing **")
+        if arg is None:
+            print("** class name missing **")
 
-    #     elif arg != "BaseModel":
-    #         print("** class doesn't exist **")
+        elif arg != "BaseModel":
+            print("** class doesn't exist **")
 
-    #     # check the length of the arg, we are expecting to be 2
-    #     elif len(arg_list) < 2:
-    #         print("** instance id missing **")
+        # check the length of the arg, we are expecting to be 2
+        elif len(arg_list) < 2:
+            print("** instance id missing **")
 
-    #     else:
-    #         obj_id = arg_list[0] + '.' + arg_list[1]
-    #         models.storage.all().pop(obj_id)
-    #         data = models.storage.all().get(obj_id)
-    #         if data is None:
-    #             models.storage.save()
-    #             return print("deleted")
+        else:
+            obj_id = arg_list[0] + '.' + arg_list[1]
+            models.storage.all().pop(obj_id)
+            data = models.storage.all().get(obj_id)
+            if data is None:
+                models.storage.save()
+                return print("deleted")
 
-    # def do_all(self, arg):
-    #     """
-    #     Prints all string representation of all instances
-    #     based or not on the class name. Ex: $ all BaseModel or $ all
-    #     * The printed result must be a list of strings
-    #     """
-    #     if type(arg) == str:
-    #         arg_list = arg.split(" ")
-    #     else:
-    #         arg
+    def do_all(self, arg):
+        """
+        Prints all string representation of all instances
+        based or not on the class name. Ex: $ all BaseModel or $ all
+        * The printed result must be a list of strings
+        """
+        if type(arg) == str:
+            arg_list = arg.split(" ")
+        else:
+            arg
 
-    #     obj_list = []
+        obj_list = []
 
-    #     # if arg is None:
-    #     #     data = models.storage.all()
-    #     #     for key in data:
-    #     #         # obj_list.append(str(data[key]))
-    #     #         print([str(data[key])])
+        # if arg is None:
+        #     data = models.storage.all()
+        #     for key in data:
+        #         # obj_list.append(str(data[key]))
+        #         print([str(data[key])])
 
-    #     if arg == arg_list[0]:
-    #         data = models.storage.all()
-    #         for key, value in data.items():
-    #             key = key.split('.')[0]  # this doesnt id part
-    #             if key == arg:
-    #                 obj_list.append(str(value))
-    #                 print(obj_list)
-    #             else:
-    #                 obj_list.append(str(value))
-    #                 print(obj_list)
-    #     else:
-    #         print("** class name missing **")
+        if arg == arg_list[0]:
+            data = models.storage.all()
+            for key, value in data.items():
+                key = key.split('.')[0]  # this doesnt id part
+                if key == arg:
+                    obj_list.append(str(value))
+                    print(obj_list)
+                else:
+                    obj_list.append(str(value))
+                    print(obj_list)
+        else:
+            print("** class name missing **")
 
-    #         # if obj["__class__"] == "BaseModel":
-    #         #     obj_list.append(obj)
+            # if obj["__class__"] == "BaseModel":
+            #     obj_list.append(obj)
 
-    # def do_update(self, arg):
-    #     """
-    #     Updates an instance based on the class name and
-    #     id by adding or updating attribute
-    #     """
+    def do_update(self, arg):
+        """
+        Updates an instance based on the class name and
+        id by adding or updating attribute
+        """
 
-    #     if type(arg) == str:
-    #         arg_list = arg.split(" ")
-    #     else:
-    #         arg
+        if type(arg) == str:
+            arg_list = arg.split(" ")
+        else:
+            arg
 
-    #     if not arg:
-    #         print("** class name missing **")
+        if not arg:
+            print("** class name missing **")
 
-    #     elif arg != "BaseModel":
-    #         print("** class doesn't exist **")
+        elif arg != "BaseModel":
+            print("** class doesn't exist **")
 
-    #     # check the length of the arg, we are expecting to be 2
-    #     if len(arg_list) == 1:
-    #         print("** instance id missing **")
-    #     else:
-    #         obj_id = arg_list[0] + '.' + arg_list[1]
-    #         data = models.storage.all().get(obj_id)
-    #         if data is None:
-    #             print("** no instance found **")
+        # check the length of the arg, we are expecting to be 2
+        if len(arg_list) == 1:
+            print("** instance id missing **")
+        else:
+            obj_id = arg_list[0] + '.' + arg_list[1]
+            data = models.storage.all().get(obj_id)
+            if data is None:
+                print("** no instance found **")
 
-    #     if len(arg_list) == 2:
-    #         print('** attribute name missing **')
-    #     elif len(arg_list) == 3:
-    #         print('** value missing **')
+        if len(arg_list) == 2:
+            print('** attribute name missing **')
+        elif len(arg_list) == 3:
+            print('** value missing **')
 
 
 if __name__ == '__main__':

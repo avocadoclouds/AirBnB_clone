@@ -165,23 +165,29 @@ class HBNBCommand(cmd.Cmd):
 
         if not arg:
             print("** class name missing **")
+            return
 
-        elif arg != "BaseModel":
+        elif arg_list[0] != "BaseModel":
             print("** class doesn't exist **")
+            return
 
         # check the length of the arg, we are expecting to be 2
-        if len(arg_list) == 1:
+        elif len(arg_list) < 2:
             print("** instance id missing **")
-        else:
-            obj_id = arg_list[0] + '.' + arg_list[1]
-            data = models.storage.all().get(obj_id)
-            if data is None:
-                print("** no instance found **")
+            return
+
+        obj_id = arg_list[0] + '.' + arg_list[1]
+        data = models.storage.all().get(obj_id)
+        if data is None:
+            print("** no instance found **")
+            return
 
         if len(arg_list) == 2:
             print('** attribute name missing **')
+            return
         elif len(arg_list) == 3:
             print('** value missing **')
+            return
 
 
 if __name__ == '__main__':

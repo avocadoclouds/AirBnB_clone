@@ -189,6 +189,19 @@ class HBNBCommand(cmd.Cmd):
             print('** value missing **')
             return
 
+        """here starts the updating part"""
+
+        # this helps remove the double qoutes from arguments, when entered
+        value = eval(arg_list[3])
+        setattr(data, arg_list[2], value)
+        models.storage.save()
+
+        # value = getattr(data, arg_list[2])
+        # if value is None:
+        #     data.arg_list[2] = arg_list[3]
+        # else:
+        #     if hasattr(data, arg)
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()

@@ -6,6 +6,7 @@ import cmd
 
 import models
 from models.base_model import BaseModel
+from models.user import User
 from models.engine.file_storage import FileStorage
 
 
@@ -13,8 +14,9 @@ class HBNBCommand(cmd.Cmd):
     """cmd class"""
     prompt = '(hbnb) '
     file = 'file.json'
-
+    classes = ['BaseModel', 'User']
     # needs another argument to see what action to be taken
+
     def do_quit(self, arg):
         """Quit command to exit the program"""
         return True
@@ -39,10 +41,10 @@ class HBNBCommand(cmd.Cmd):
         """
         if not arg:
             print("** class name missing **")
-        elif arg != "BaseModel":
+        elif arg not in self.classes:
             print("** class doesn't exist **")
         else:
-            obj = BaseModel()
+            obj = eval(arg + "()")
             # remember this saves instances
             obj.save()
             print(obj.id)
@@ -63,7 +65,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        elif arg_list[0] != "BaseModel":
+        elif arg_list[0] not in self.classes:
             print("** class doesn't exist **")
             return
 
@@ -95,7 +97,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        elif arg_list[0] != "BaseModel":
+        elif arg_list[0] not in self.classes:
             print("** class doesn't exist **")
             return
 
@@ -136,7 +138,7 @@ class HBNBCommand(cmd.Cmd):
         #         # obj_list.append(str(data[key]))
         #         print([str(data[key])])
 
-        if arg_list[0] == "BaseModel" or not arg:
+        if arg_list[0] in self.classes or not arg:
             data = models.storage.all()
             for key, value in data.items():
                 key = key.split('.')[0]  # this doesnt id part
@@ -167,7 +169,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        elif arg_list[0] != "BaseModel":
+        elif arg_list[0] not in self.classes:
             print("** class doesn't exist **")
             return
 

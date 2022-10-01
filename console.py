@@ -95,7 +95,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
         # check the length of the arg, we are expecting to be 2
-        elif arg_list[1] is None:
+        elif len(arg_list) < 2:
             print("** instance id missing **")
         else:
             obj_id = arg_list[0] + '.' + arg_list[1]
@@ -169,9 +169,9 @@ class HBNBCommand(cmd.Cmd):
             if data is None:
                 print("** no instance found **")
 
-        if arg_list[2] is None:
+        if len(arg_list) == 2:
             print('** attribute name missing **')
-        elif arg_list[3] is None:
+        elif len(arg_list) == 3:
             print('** value missing **')
 
 

@@ -225,6 +225,20 @@ class HBNBCommand(cmd.Cmd):
             if className in self.classes:
                 if method == 'all':
                     self.do_all(className)
+                if method == "count":
+                    data = models.storage.all()
+                    dataKeys = data.keys()
+                    onlyKeys = []
+                    for key in dataKeys:
+                        keys = key.split(".")
+                        onlyKeys.append(keys[0])
+                    count = 0
+                    for key in onlyKeys:
+                        if key == className:
+                            count = count + 1
+                # return or print outside the loop or if statement
+                # return or print for your main uf statement or loop
+                print(count)
 
 
 if __name__ == '__main__':

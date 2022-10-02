@@ -211,6 +211,21 @@ class HBNBCommand(cmd.Cmd):
         # else:
         #     if hasattr(data, arg)
 
+    # this does all the commands
+    def default(self, line):
+        """
+        Recieves class name + . + command + ()
+        """
+        if '.' in line:
+            arg_list = line.split(".")
+            method = arg_list[1].split("()")
+            method = method[0]
+            className = arg_list[0]
+
+            if className in self.classes:
+                if method == 'all':
+                    self.do_all(className)
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()

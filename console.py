@@ -239,7 +239,7 @@ class HBNBCommand(cmd.Cmd):
                     # return or print outside the loop
                     print(count)
 
-        if '("' in line:
+        if "('" in line:
             arg_list = line.split(".")
             className = arg_list[0]
             a = arg_list[1].split("()")

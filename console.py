@@ -218,9 +218,13 @@ class HBNBCommand(cmd.Cmd):
         """
         if '.' in line:
             arg_list = line.split(".")
-            method = arg_list[1].split("()")
-            method = method[0]
             className = arg_list[0]
+            a = arg_list[1].split("()")
+            b = a[0].split("(")
+            c = b[1].split("'")
+            argument = c[1]
+
+            method = b[0]
 
             if className in self.classes:
                 if method == 'all':
@@ -236,9 +240,10 @@ class HBNBCommand(cmd.Cmd):
                     for key in onlyKeys:
                         if key == className:
                             count = count + 1
-                # return or print outside the loop or if statement
-                # return or print for your main uf statement or loop
-                print(count)
+                    # return or print outside the loop
+                    print(count)
+                if method == "show":
+                    self.do_show(className + ' ' + argument)
 
 
 if __name__ == '__main__':

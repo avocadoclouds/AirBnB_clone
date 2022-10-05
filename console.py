@@ -218,13 +218,9 @@ class HBNBCommand(cmd.Cmd):
         """
         if '.' in line:
             arg_list = line.split(".")
+            method = arg_list[1].split("()")
+            method = method[0]
             className = arg_list[0]
-            a = arg_list[1].split("()")
-            b = a[0].split("(")
-            c = b[1].split("'")
-            argument = c[1]
-
-            method = b[0]
 
             if className in self.classes:
                 if method == 'all':
@@ -242,8 +238,28 @@ class HBNBCommand(cmd.Cmd):
                             count = count + 1
                     # return or print outside the loop
                     print(count)
+
+        if '("' in line:
+            arg_list = line.split(".")
+            className = arg_list[0]
+            a = arg_list[1].split("()")
+            b = a[0].split("(")
+            c = b[1].split("'")
+            argument = c[1]
+
+            method = b[0]
+
+            if className in self.classes:
                 if method == "show":
                     self.do_show(className + ' ' + argument)
+                    # obj_id = className + '.' + argument
+                    # data = models.storage.all().get(obj_id)
+                    # if data is None:
+                    #     print("** no instance found **")
+                    #     return
+
+                    # else:
+                    #     return print(data)
 
 
 if __name__ == '__main__':

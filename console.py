@@ -226,11 +226,20 @@ class HBNBCommand(cmd.Cmd):
                 if "'" in b[1]:
                     c = b[1].split("'")
                     argument = c[1]
-                    print(argument)
                 elif '"' in b[1]:
                     c = b[1].split('"')
                     argument = c[1]
-                    print(argument)
+                if len(c) > 3:
+                    if c[3] is not None:
+                        attribute = c[3]
+
+                    if c[4] != ',':
+                        z = c[4].split(')')
+                        y = z[0].split(', ')
+                        value = y[1]
+                        if len(value) > 0:
+                            value = '"' + c[5] + '"'
+                            print(value)
 
             if className in self.classes:
                 if method == 'all':
@@ -252,6 +261,9 @@ class HBNBCommand(cmd.Cmd):
                     self.do_show(className + ' ' + argument)
                 if method == "destroy":
                     self.do_destroy(className + ' ' + argument)
+                if method == "update":
+                    self.do_update(className + ' ' + argument +
+                                   ' ' + attribute + ' ' + value)
 
 
 if __name__ == '__main__':

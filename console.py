@@ -250,6 +250,8 @@ class HBNBCommand(cmd.Cmd):
                     print(count)
                 if method == "show":
                     self.do_show(className + ' ' + argument)
+                if method == "destroy":
+                    self.do_destroy(className + ' ' + argument)
 
 
 if __name__ == '__main__':

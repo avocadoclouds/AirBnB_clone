@@ -238,6 +238,9 @@ class HBNBCommand(cmd.Cmd):
                         y = z[0].split(', ')
                         value = y[1]
                         if len(value) > 0:
+                            print(value)
+
+                        else:
                             value = '"' + c[5] + '"'
                             print(value)
 

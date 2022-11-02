@@ -111,5 +111,5 @@ donjoe@xxxxx:~/Desktop/alx/AirBnB_clone$
 ---
 
 ### Authors
-- [Rihana Ali Saeid](https://github.com/avocadoclouds)
+- [Rihana Ali Saeid](https://github.com/rihannas)
 - [Joseph Emmanuel](https://github.com/dnjoe96)

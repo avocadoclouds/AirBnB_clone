@@ -111,5 +111,5 @@ class FileStorage():
 
                 json_dict = json.loads(f.read())
                 for k, v in json_dict.items():
-                    # self.__objects[k] = eval(v['__class__'])(**v) <-- this works
-                    self.__objects[k] = BaseModel(**v) # wanted to see if this works too
+                    self.__objects[k] = eval(v['__class__'])(**v) 
+                    # self.__objects[k] = BaseModel(**v) 

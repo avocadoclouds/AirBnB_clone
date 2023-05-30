@@ -508,6 +508,16 @@ class HBNBCommand(cmd.Cmd):
             elif method == 'update':
                 self.do_update(key + ' ' + idd + ' ' + attr + ' ' + val)
 
+            elif method == 'count':
+                all_objs = storage.all()
+                count = 0
+                for k, v in all_objs.items():
+                    classNameId = k.split('.')
+                    className = classNameId[0]
+                    if key == className:
+                        count = count + 1
+                print(count)
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()

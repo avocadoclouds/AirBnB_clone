@@ -1,6 +1,6 @@
-#!/usr/bin/python3
+# #!/usr/bin/python3
 
-"""HBNBCommand module"""
+# """HBNBCommand module"""
 
 # import cmd
 
@@ -269,6 +269,9 @@
 #                                    ' ' + attribute + ' ' + value)
 
 
+#!/usr/bin/python3
+
+'''console module'''
 import cmd
 from models.base_model import BaseModel
 from models.user import User
@@ -471,52 +474,43 @@ class HBNBCommand(cmd.Cmd):
                         storage.save()
 
     def default(self, line):
-        args = line.split('.')
-        key = args[0]
-        methodID = args[1].split('(')
-        method = methodID[0]
-        idd = methodID[1].removesuffix(')').removeprefix('"').removesuffix('"')
+        argsList = line.split('.')
+        key = argsList[0]
+        argsList2 = argsList[1].split('()')
+        if len(argsList2) == 2:
+            method = argsList2[0]
+        else:
+            a = argsList2[0].split('("')
+            method = a[0]
 
-        noIdMethods = {'all': self.do_all, 'create': self.do_create}
-
-        idMethods = {'show': self.do_show,
-                     'destroy': self.do_destroy}
-
-        update = {'update': self.do_update}
+            b = a[1].split(",")
+            if len(b) == 1:
+                idd = b[0].strip('")')
+            else:
+                idd = b[0].strip('")')
+                attr = b[1].strip(' "')
+                b[2] = b[2].strip(')')
+                val = b[2].strip(' ')
 
         if key in self.classes:
+            if method == 'all':
+                self.do_all(key)
 
-            if method in idMethods:
-                if idd:
-                    for k, v in idMethods.items():
-                        if k == method:
-                            linee = key + ' ' + idd
-                            v(linee)
+            elif method == 'create':
+                self.do_create(key)
 
-            elif method in noIdMethods:
-                for k, v in noIdMethods.items():
-                    if k == method:
-                        v(key)
+            elif method == 'destroy':
+                self.do_destroy(key + ' ' + idd)
 
-            elif method == 'count':
-                all_objs = storage.all()
-                clsNameList = []
-                for k, v in all_objs.items():
-                    classname = k.split('.')[0]
-                    clsNameList.append(classname)
-                c = clsNameList.count(key)
-                print(c)
+            elif method == 'show':
+                self.do_show(key + ' ' + idd)
 
-            else:
-                # update method
-                idAttrVal = methodID[1].split(',')  # this is a list now
-                idd = idAttrVal[0].replace('"', '')
-                attr = idAttrVal[1].replace(' "', '').removesuffix('"')
-                val = idAttrVal[2].replace(' "', '')
-                val = val.replace('")', '')
-                v = update[method]
-                linee = key + ' ' + idd + ' ' + attr + ' ' + val
-                v(linee)
+            elif method == 'update':
+                self.do_update(key + ' ' + idd + ' ' + attr + ' ' + val)
+
+
+if __name__ == '__main__':
+    HBNBCommand().cmdloop()
 
 
 if __name__ == '__main__':

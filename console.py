@@ -478,7 +478,7 @@ class HBNBCommand(cmd.Cmd):
         method = methodID[0]
         idd = methodID[1].removesuffix(')').removeprefix('"').removesuffix('"')
 
-        noIdMethods = {'all': self.do_all, 'create': self.do_create}
+        noIdMethods = {'create': self.do_create}
 
         idMethods = {'show': self.do_show,
                      'destroy': self.do_destroy}
@@ -487,6 +487,15 @@ class HBNBCommand(cmd.Cmd):
 
         if key not in self.classes:
             print('** class doesn\'t exist **')
+
+        elif method == 'all':
+            all_objs = storage.all()
+            objList = []
+            for k, v in all_objs.items():
+                classname = k.split('.')[0]
+                if k == classname:
+                    objList.append(v)
+            print(objList)
 
         elif method in idMethods:
             if idd:

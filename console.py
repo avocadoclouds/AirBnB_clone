@@ -393,14 +393,14 @@ class HBNBCommand(cmd.Cmd):
             key = commands[0]
             if key not in self.classes.keys():
                 print('** class doesn\'t exist **')
-
-            all_objs = storage.all()
-            for k, v in all_objs.items():
-                classname_Id = k.split('.')
-                classname = classname_Id[0]
-                if classname == key:
-                    objList.append(f'{v}')
-            print(objList)
+            else:
+                all_objs = storage.all()
+                for k, v in all_objs.items():
+                    classname_Id = k.split('.')
+                    classname = classname_Id[0]
+                    if classname == key:
+                        objList.append(f'{v}')
+                print(objList)
 
     def do_destroy(self, line):
         """
@@ -441,7 +441,7 @@ class HBNBCommand(cmd.Cmd):
         key = commands[0]
 
         if not key:
-            print('** class name is missing **')
+            print('** class name missing **')
 
         elif key not in self.classes:
             print('** class doesn\'t exist **')

@@ -3,8 +3,8 @@
 a module with class
 """
 import json
-import os
 from os import path
+
 from models.base_model import BaseModel
 from models.user import User
 from models.amenity import Amenity
@@ -70,25 +70,11 @@ class FileStorage():
         #      then we assign the dictionary back to the key, then
         #      we serialise the file.
 
-        # dic_storage = {}
-        # for key, value in self.__objects.items():
-        #     dic_storage[key] = value.to_dict()
-        # with open(self.__file_path, "w", encoding='utf-8') as file_json:
-        #     file_json.write(json.dumps(dic_storage))
-
-        if os.path.exists(FileStorage.__file_path):
-            new_data = dict((k, v.to_dict())
-                            for k, v in FileStorage.__objects.items())
-            with open(FileStorage.__file_path) as file:
-                obj_data = json.load(file)
-                obj_data.update(new_data)
-                with open(FileStorage.__file_path, mode='w') as file:
-                    json.dump(new_data, file, indent=4)
-        else:
-            obj_data = dict((k, v.to_dict())
-                            for k, v in FileStorage.__objects.items())
-            with open(FileStorage.__file_path, mode='w') as file:
-                json.dump(obj_data, file, indent=4)
+        dic_storage = {}
+        for key, value in self.__objects.items():
+            dic_storage[key] = value.to_dict()
+        with open(self.__file_path, "w", encoding='utf-8') as file_json:
+            file_json.write(json.dumps(dic_storage))
 
     def reload(self):
         """
@@ -99,49 +85,30 @@ class FileStorage():
         """
 
         # check if __file_path exists
-        # if path.exists(self.__file_path):
-        # Note: now the value which a dictionary,
-        #  now is deserialised
+        if path.exists(self.__file_path):
+            # Note: now the value which a dictionary,
+            #  now is deserialised
 
-        # with open(self.__file_path, 'r', encoding="utf-8") as f:
+            with open(self.__file_path, 'r', encoding="utf-8") as f:
 
-        """
-        '**' takes a dict and extracts its contents
-        and passes them as parameters to a function.
-        Take this function for example:
+                """
+                '**' takes a dict and extracts its contents
+                and passes them as parameters to a function.
+                Take this function for example:
 
-        def func(a=1, b=2, c=3):
-            print a
-            print b
-            print b
-        Now normally you could call this function like this:
-            func(1, 2, 3)
-        But you can also populate a dictionary with
-        those parameters stored like so:
-            params = {'a': 2, 'b': 3, 'c': 4}
-        Now you can pass this to the function:
-            func(**params) ** means kwargs
-        """
+                def func(a=1, b=2, c=3):
+                    print a
+                    print b
+                    print b
+                Now normally you could call this function like this:
+                    func(1, 2, 3)
+                But you can also populate a dictionary with
+                those parameters stored like so:
+                    params = {'a': 2, 'b': 3, 'c': 4}
+                Now you can pass this to the function:
+                    func(**params) ** means kwargs
+                """
 
-            # json_dict = json.loads(f.read())
-            # for k, v in json_dict.items():
-            #     self.__objects[k] = eval(v['__class__'])(**v)
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.place import Place
-        from models.review import Review
-
-        classes = {'BaseModel': BaseModel, 'User': User, 'State': State,
-                'City': City, 'Amenity': Amenity, 'Place': Place,
-                'Review': Review}
-        if os.path.exists(FileStorage.__file_path):
-            with open(FileStorage.__file_path) as file:
-                json_str = json.load(file)
-            for k, v in json_str.items():
-                if v["__class__"] in classes:
-                    FileStorage.__objects[k] = classes[v["__class__"]](**v)
-        else:
-            pass
+                json_dict = json.loads(f.read())
+                for k, v in json_dict.items():
+                    self.__objects[k] = eval(v['__class__'])(**v)
